@@ -10,7 +10,7 @@
     <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="init()">
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">Navbar</span>
@@ -21,32 +21,28 @@
         <div class="card quiz-card">
             <img src="./assets/img/background.jpg" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title">Frage</h5>
+                <h5 class="card-title" id="currentQuestion"></h5>
 
                 <div class="card mb-2">
-                    <div class="card-body">
-                        Antwort
+                    <div class="card-body" id="answer_1">
                     </div>
                 </div>
                 <div class="card mb-2">
-                    <div class="card-body">
-                        Antwort
+                    <div class="card-body" id="answer_2">
                     </div>
                 </div>
                 <div class="card mb-2">
-                    <div class="card-body">
-                        Antwort
+                    <div class="card-body" id="answer_3">
                     </div>
                 </div>
                 <div class="card mb-2">
-                    <div class="card-body">
-                        Antwort
+                    <div class="card-body" id="answer_4">                      
                     </div>
                 </div>
 
                 <div class="question-footer">
                     <span>
-                        <b>1</b> von <b>5</b> Fragen
+                        <b>1</b> von <b id="all-questions">5</b> Fragen
                     </span>
                     <button class="btn btn-primary"> Nächste Frage</button>
                 </div>
