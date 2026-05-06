@@ -66,10 +66,52 @@ function init() {
 
 function showQuestion() {
     let question = questions[currentQuestion];
+
     document.getElementById('currentQuestion').innerHTML = question['question'];
-    
     document.getElementById('answer_1').innerHTML = question['answer_1'];
     document.getElementById('answer_2').innerHTML = question['answer_2'];
     document.getElementById('answer_3').innerHTML = question['answer_3'];
     document.getElementById('answer_4').innerHTML = question['answer_4'];
+
+    document.getElementById('answer_1').classList.remove('bg-success');
+    document.getElementById('answer_2').classList.remove('bg-success');
+    document.getElementById('answer_3').classList.remove("bg-success");
+    document.getElementById('answer_4').classList.remove('bg-success');
+}
+
+function answer(selection) {
+    let selectedAnswer = selection.slice(-1);
+    let rightAnswer = questions[currentQuestion]['right_answer'];
+    let idOfRightAnswer = `answer_${rightAnswer}`;
+
+    if (selectedAnswer == rightAnswer) {
+        document.getElementById(selection).parentNode.classList.add('bg-success');
+    } else {
+        document.getElementById(selection).parentNode.classList.add('bg-danger');
+        document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+    }
+    
+    document.getElementById('next').disabled = false;
+}
+
+function nextQuestion() {
+    currentQuestion ++;
+    document.getElementById('next').disabled = true;
+    clearBackgroundColor();
+    showQuestion();
+    showCurrentQuestion();  
+}
+
+function clearBackgroundColor() {
+    document.getElementById('answer_1').parentNode.classList.remove('bg-success', 'bg-danger');
+    document.getElementById('answer_2').parentNode.classList.remove('bg-success', 'bg-danger');
+    document.getElementById('answer_3').parentNode.classList.remove('bg-success', 'bg-danger');
+    document.getElementById('answer_4').parentNode.classList.remove('bg-success', 'bg-danger');
+}
+
+function showCurrentQuestion() {
+    let questionNumber =  document.getElementById('currentQuestionNumber')
+    
+    questionNumber.innerHTML = "";
+    questionNumber.innerHTML += currentQuestion +1;
 }
