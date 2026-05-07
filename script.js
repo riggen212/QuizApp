@@ -21,15 +21,15 @@ let questions = [
         "answer_2": "&lt;iframe&gt;",
         "answer_3": "&lt;frame&gt;",
         "answer_4": "&lt;frameset&gt;",
-        "right_answer": 3
+        "right_answer": 2
     },
     {
-        "question": "Wer hat HTML erfunden",
-        "answer_1": "Robbie Williams",
-        "answer_2": "Lady Gaga",
-        "answer_3": "Tim Berners-Lee",
-        "answer_4": "Justin Bieber",
-        "right_answer": 3
+        "question": "Wie stellt man Text am BESTEN fett dar?",
+        "answer_1": "&lt;strong&gt;",
+        "answer_2": "CSS nutzen",
+        "answer_3": "&lt;bold&gt;",
+        "answer_4": "&lt;b&gt;",
+        "right_answer": 1
     },
     {
         "question": "Welches Attribut kann man NICHT für Textarea verwenden?",
@@ -54,10 +54,15 @@ let questions = [
         "answer_3": "rate = 100;",
         "answer_4": "let rate = 100;",
         "right_answer": 4
-    }  
+    }
 ];
 
 let currentQuestion = 0;
+let rightAnswerCount = 0;
+
+
+let AUDIO_RIGHT = new Audio('./assets/sounds/sound_right.wav');
+let AUDIO_WRONG = new Audio('./assets/sounds/sound_wrong.mp3');
 
 function init() {
     document.getElementById('all-questions').innerHTML = questions.length;
@@ -86,20 +91,37 @@ function answer(selection) {
 
     if (selectedAnswer == rightAnswer) {
         document.getElementById(selection).parentNode.classList.add('bg-success');
+        AUDIO_RIGHT.play();
+        rightAnswerCount ++;
     } else {
         document.getElementById(selection).parentNode.classList.add('bg-danger');
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+        AUDIO_WRONG.play();
     }
-    
+
     document.getElementById('next').disabled = false;
 }
 
 function nextQuestion() {
-    currentQuestion ++;
-    document.getElementById('next').disabled = true;
-    clearBackgroundColor();
-    showQuestion();
-    showCurrentQuestion();  
+    currentQuestion++;
+    if (currentQuestion >= questions.length) {
+        document.getElementById('question-body').style = 'display: none';
+        document.getElementById('end-screen').style = '';
+        document.getElementById('end-screen_all').innerHTML = questions.length;
+        document.getElementById('right_answer-amount').innerHTML = rightAnswerCount;
+        document.getElementById('card_img').src = './assets/img/trophy.png';
+    } else {
+        let percent = (currentQuestion + 1) / questions.length;
+        percent = Math.round(percent * 100);
+
+        document.getElementById('progress_bar').innerHTML = `${percent}%`;
+        document.getElementById('progress_bar').style.width = `${percent}%`;
+
+        document.getElementById('next').disabled = true;
+        clearBackgroundColor();
+        showQuestion();
+        showCurrentQuestion();
+    }
 }
 
 function clearBackgroundColor() {
@@ -110,8 +132,18 @@ function clearBackgroundColor() {
 }
 
 function showCurrentQuestion() {
-    let questionNumber =  document.getElementById('currentQuestionNumber')
-    
+    let questionNumber = document.getElementById('currentQuestionNumber')
+
     questionNumber.innerHTML = "";
-    questionNumber.innerHTML += currentQuestion +1;
+    questionNumber.innerHTML += currentQuestion + 1;
+}
+
+function restartGame() {    
+    document.getElementById('card_img').src = './assets/img/background.jpg';
+    currentQuestion = -1;
+    rightAnswerCount = 0;
+
+    document.getElementById('end-screen').style = 'display: none';
+    document.getElementById('question-body').style = '';
+    nextQuestion();
 }
